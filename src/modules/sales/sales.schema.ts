@@ -1,27 +1,37 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { Client } from '../clients/clients.schema';
-import { Product } from '../products/products.schema';
-import { User } from '../users/users.schema';
- 
-export type SaleDocument = Sale & Document;
+
+@Schema({ _id: false })
+export class SaleProduct {
+  @Prop({ type: Types.ObjectId, ref: 'Product', required: true })
+  productId: Types.ObjectId;
+
+  @Prop({ type: Number, required: true })
+  quantity: number;
+
+  @Prop({ type: Number, required: true })
+  price: number;
+}
+
+export const SaleProductSchema = SchemaFactory.createForClass(SaleProduct);
 
 @Schema({ timestamps: true })
 export class Sale {
-  @Prop({ type: Types.ObjectId, ref: 'Customer' })
-  customerId?: Client | Types.ObjectId;
+  @Prop({ type: Types.ObjectId, ref: 'Client', required: true })
+  clientId: Types.ObjectId;
 
-  @Prop({ type: [{ productId: { type: Types.ObjectId, ref: 'Product' }, quantity: Number, price: Number }] })
-  products: { productId: Product | Types.ObjectId; quantity: number; price: number }[];
+  @Prop({ type: [SaleProductSchema], default: [] })
+  products: SaleProduct[];
+
+  @Prop({ type: Number, required: true })
+  totalAmount: number;
+
+  @Prop({ type: Date, default: Date.now })
+  date: Date;
 
   @Prop({ required: true })
-  total: number;
-
-  @Prop({ default: 'En cours' })
-  status: string;
-
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  userId: User | Types.ObjectId;
+  paymentMethod: string;
 }
 
+export type SaleDocument = Sale & Document;
 export const SaleSchema = SchemaFactory.createForClass(Sale);
