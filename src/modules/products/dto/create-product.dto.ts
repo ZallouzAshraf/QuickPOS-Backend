@@ -1,37 +1,35 @@
-import {
-  IsDateString,
-  IsInt,
-  IsMongoId,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  Min,
-} from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsDateString, IsInt, IsMongoId, IsNotEmpty, IsNumber, IsOptional, IsString, Min } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateProductDto {
+  @ApiProperty({ example: 'Scanner Barcode' })
   @IsString()
   @IsNotEmpty()
   name: string;
 
+  @ApiProperty({ example: '64f0c2ad2b4f3a5c1d2e3f4a' })
   @IsMongoId()
   categoryId: string;
 
+  @ApiProperty({ minimum: 0, example: 99.9 })
   @Type(() => Number)
   @IsNumber()
   @Min(0)
   price: number;
 
+  @ApiProperty({ minimum: 0, example: 50 })
   @Type(() => Number)
   @IsInt()
   @Min(0)
   stock: number;
 
+  @ApiPropertyOptional({ example: 'High-speed USB barcode scanner.' })
   @IsString()
   @IsOptional()
   description?: string;
 
+  @ApiPropertyOptional({ example: '2025-01-01T00:00:00.000Z' })
   @IsDateString()
   @IsOptional()
   createdAt?: string;
