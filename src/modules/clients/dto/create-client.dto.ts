@@ -4,9 +4,13 @@ import { Type } from 'class-transformer';
 import { ClientStatus, ClientType } from '../clients.schema';
 
 export class CreateClientDto {
-  @ApiProperty({ example: 'ACME Corp.' })
+  @ApiPropertyOptional({ example: 'John' })
   @IsString()
-  name: string;
+  firstName: string;
+
+  @ApiPropertyOptional({ example: 'Doe' })
+  @IsString()
+  lastName: string;
 
   @ApiProperty({ enum: ClientType, example: ClientType.COMPANY })
   @IsEnum(ClientType)
