@@ -12,6 +12,10 @@ export class CreateProductDto {
   @IsMongoId()
   categoryId: string;
 
+  @ApiProperty({ example: 'Category' })
+  @IsMongoId()
+  category: string;
+
   @ApiProperty({ minimum: 0, example: 99.9 })
   @Type(() => Number)
   @IsNumber()
@@ -28,6 +32,11 @@ export class CreateProductDto {
   @IsString()
   @IsOptional()
   description?: string;
+
+  @ApiPropertyOptional({ example: 'imageUrl' })
+  @IsString()
+  @IsOptional()
+  image?: string;
 
   @ApiPropertyOptional({ example: '2025-01-01T00:00:00.000Z' })
   @IsDateString()

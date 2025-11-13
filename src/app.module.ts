@@ -11,6 +11,7 @@ import { UsersModule } from './modules/users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { SettingsModule } from './modules/settings/settings.module';
+import { CategoryModule } from './modules/categories/categories.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { SettingsModule } from './modules/settings/settings.module';
     LicenseModule,
     AnalyticsModule,
     SettingsModule,
+    CategoryModule
   ],
   controllers: [AppController],
   providers: [AppService],

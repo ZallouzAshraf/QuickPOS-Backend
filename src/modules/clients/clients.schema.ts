@@ -14,16 +14,19 @@ export enum ClientStatus {
 @Schema({ timestamps: true })
 export class Client {
   @Prop({ required: true })
-  name: string;
+  firstName: string;
+
+  @Prop({ required: true })
+  lastName: string;
 
   @Prop({ type: String, enum: ClientType, required: true })
   type: ClientType;
 
-  @Prop({ lowercase: true, trim: true })
-  email?: string;
+  @Prop({ lowercase: true, trim: true, required: true })
+  email: string;
 
-  @Prop()
-  phone?: string;
+  @Prop({ required: true })
+  phone: string;
 
   @Prop()
   address?: string;
