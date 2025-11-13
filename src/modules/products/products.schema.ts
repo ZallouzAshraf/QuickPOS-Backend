@@ -4,19 +4,25 @@ import { Document, Types } from 'mongoose';
 @Schema({ timestamps: true })
 export class Product {
   @Prop({ required: true })
+  brand: string;
+
+  @Prop({ required: true })
   name: string;
 
-  @Prop({ type: Types.ObjectId, ref: 'Category', required: true })
-  categoryId: Types.ObjectId;
+  @Prop({ required: true })
+  category: string; 
 
-  @Prop({ type: Number, required: true })
+  @Prop({ required: true })
   price: number;
 
-  @Prop({ type: Number, required: true })
+  @Prop({ required: true })
   stock: number;
 
   @Prop()
   description?: string;
+
+  @Prop()
+  image?: string; 
 
   @Prop({ type: Date, default: Date.now })
   createdAt: Date;
