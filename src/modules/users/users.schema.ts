@@ -14,19 +14,22 @@ export enum UserStatus {
 @Schema({ timestamps: true, versionKey: false })
 export class User {
   @Prop({ required: true })
-  name: string;
+  firstName: string;
+
+  @Prop({ required: true })
+  lastName: string;
 
   @Prop({ required: true, unique: true, lowercase: true, trim: true })
   email: string;
 
-  @Prop({ required: true, trim: true })
+  @Prop({ trim: true })
+  company: string;
+
+  @Prop({ trim: true })
   phone: string;
 
   @Prop({ required: true })
   password: string;
-
-  @Prop({ type: String, enum: UserRole, default: UserRole.EMPLOYEE })
-  role: UserRole;
 
   @Prop({ type: String, enum: UserStatus, default: UserStatus.ACTIVE })
   status: UserStatus;

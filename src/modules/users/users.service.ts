@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User, UserDocument } from './users.schema';
 
@@ -16,7 +15,7 @@ export class UsersService {
     return plain;
   }
 
-  async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: UpdateUserDto) {
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     const createdUser = new this.userModel({ ...createUserDto, password: hashedPassword });
     const savedUser = await createdUser.save();
