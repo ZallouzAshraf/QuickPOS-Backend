@@ -3,7 +3,7 @@ import { Document, Types } from 'mongoose';
 
 export type CategoryDocument = Category & Document;
 
-@Schema()
+@Schema({ versionKey: false })
 export class CategoryItem {
   @Prop({ required: true })
   name: string;
@@ -12,7 +12,7 @@ export class CategoryItem {
   isActive: boolean;
 }
 
-@Schema({ timestamps: true })
+@Schema({ timestamps: true, versionKey: false })
 export class Category {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   userId: Types.ObjectId;

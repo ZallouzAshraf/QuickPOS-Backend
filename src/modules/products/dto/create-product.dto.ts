@@ -8,12 +8,13 @@ export class CreateProductDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiProperty({ example: '64f0c2ad2b4f3a5c1d2e3f4a' })
-  @IsMongoId()
-  categoryId: string;
+  @ApiProperty({ example: 'Honeywell' })
+  @IsString()
+  @IsNotEmpty()
+  brand: string;
 
   @ApiProperty({ example: 'Category' })
-  @IsMongoId()
+  @IsString()
   category: string;
 
   @ApiProperty({ minimum: 0, example: 99.9 })
@@ -42,5 +43,11 @@ export class CreateProductDto {
   @IsDateString()
   @IsOptional()
   createdAt?: string;
+
+  @ApiPropertyOptional({ example: '2025-01-01T00:00:00.000Z' })
+  @IsDateString()
+  @IsOptional()
+  updatedAt?: string;
+  
 }
 

@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { ArrayMinSize, IsArray, IsDateString, IsIn, IsMongoId, IsNotEmpty, IsNumber, IsPositive, ValidateNested } from 'class-validator';
+import { ArrayMinSize, IsArray, IsDateString, IsIn, IsMongoId, IsNotEmpty, IsNumber, IsOptional, IsPositive, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import { SaleProductDto } from './sale-product.dto';
 
@@ -29,5 +29,15 @@ export class CreateSaleDto {
   @ApiProperty({ enum: ['cash', 'card', 'transfer', 'mobile'], example: 'card' })
   @IsIn(['cash', 'card', 'transfer', 'mobile'])
   paymentMethod: string;
+
+  @ApiPropertyOptional({ example: '2025-01-01T00:00:00.000Z' })
+  @IsDateString()
+  @IsOptional()
+  createdAt?: string;
+
+  @ApiPropertyOptional({ example: '2025-01-01T00:00:00.000Z' })
+  @IsDateString()
+  @IsOptional()
+  updatedAt?: string;
 }
 

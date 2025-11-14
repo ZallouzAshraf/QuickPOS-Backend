@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
+import { IsDateString, IsEmail, IsEnum, IsNotEmpty, IsOptional, IsString, MinLength } from 'class-validator';
 import { UserRole, UserStatus } from '../users.schema';
+import { Exclude } from 'class-transformer';
 
 export class CreateUserDto {
   @ApiProperty({ example: 'John Doe' })
@@ -32,5 +33,16 @@ export class CreateUserDto {
   @IsEnum(UserStatus)
   @IsOptional()
   status?: UserStatus;
+
+  @ApiPropertyOptional({ example: '2025-01-01T00:00:00.000Z' })
+  @IsDateString()
+  @IsOptional()
+  createdAt?: string;
+
+  @ApiPropertyOptional({ example: '2025-01-01T00:00:00.000Z' })
+  @IsDateString()
+  @IsOptional()
+  updatedAt?: string;
+
 }
 
