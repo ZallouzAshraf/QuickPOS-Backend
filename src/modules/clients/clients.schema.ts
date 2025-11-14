@@ -11,7 +11,7 @@ export enum ClientStatus {
   INACTIVE = 'inactive',
 }
 
-@Schema({ timestamps: true })
+@Schema({ timestamps: true, versionKey: false })
 export class Client {
   @Prop({ required: true })
   firstName: string;
