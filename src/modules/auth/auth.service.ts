@@ -95,5 +95,10 @@ export class AuthService {
 
     return { message: 'Password reset successfully.' };
   }
+
+  async getCurrentUser(userId: string) {
+    const user = await this.usersService.findOne(userId);
+    return this.usersService.sanitize(user);
+  }
 }
 
