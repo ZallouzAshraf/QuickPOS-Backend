@@ -35,13 +35,13 @@ export class AuthController {
         httpOnly: process.env.COOKIE_HTTP_ONLY === 'true',
         secure: process.env.COOKIE_SECURE === 'true',
         sameSite: process.env.COOKIE_SAME_SITE as any,
-        maxAge: 10* 1000,
+        maxAge: 15 * 60 * 1000,
       })
       .cookie(process.env.COOKIE_REFRESH_NAME || '', refreshToken, {
         httpOnly: process.env.COOKIE_HTTP_ONLY === 'true',
         secure: process.env.COOKIE_SECURE === 'true',
         sameSite: process.env.COOKIE_SAME_SITE as any,
-        maxAge: 10 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .json({ message: 'Logged in successfully', user });
   }
