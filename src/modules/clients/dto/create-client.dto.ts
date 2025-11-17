@@ -50,7 +50,7 @@ export class CreateClientDto {
   @Type(() => Number)
   @IsNumber()
   @Min(0)
-  @Max(1)
+  @Max(15)
   @IsOptional()
   discountRate?: number;
 
