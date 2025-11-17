@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Res, Req, Get, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Res, Req, Get, UseGuards, UnauthorizedException } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoginAuthDto } from './dto/login-auth.dto';
@@ -27,7 +27,7 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'User authenticated successfully.' })
   @ApiResponse({ status: 401, description: 'Invalid credentials.' })
   async login(@Body() loginDto: LoginAuthDto, @Res() res: Response) {
-    const { accessToken, user } =
+    const { accessToken,refreshToken,  user } =
       await this.authService.login(loginDto);
 
     res
@@ -36,6 +36,12 @@ export class AuthController {
         secure: process.env.COOKIE_SECURE === 'true',
         sameSite: process.env.COOKIE_SAME_SITE as any,
         maxAge: 15 * 60 * 1000,
+      })
+      .cookie(process.env.COOKIE_REFRESH_NAME || '', refreshToken, {
+        httpOnly: process.env.COOKIE_HTTP_ONLY === 'true',
+        secure: process.env.COOKIE_SECURE === 'true',
+        sameSite: process.env.COOKIE_SAME_SITE as any,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .json({ message: 'Logged in successfully', user });
   }
@@ -50,6 +56,11 @@ export class AuthController {
         secure: process.env.COOKIE_SECURE === 'true',
         sameSite: process.env.COOKIE_SAME_SITE as any,
       })
+      .clearCookie(process.env.COOKIE_REFRESH_NAME || '', {
+        httpOnly: process.env.COOKIE_HTTP_ONLY === 'true',
+        secure: process.env.COOKIE_SECURE === 'true',
+        sameSite: process.env.COOKIE_SAME_SITE as any,
+      })
       .json({ message: 'Logged out successfully' });
   }
 
@@ -59,6 +70,23 @@ export class AuthController {
   @ApiResponse({ status: 404, description: 'User not found.' })
   resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
     return this.authService.resetPassword(resetPasswordDto);
+  }
+
+  @Post('refresh')
+  async refresh(@Req() req: Request, @Res() res: Response) {
+    const refreshCookieName = process.env.COOKIE_REFRESH_NAME ?? '';
+    const token = req.cookies?.[refreshCookieName];
+    if (!token) throw new UnauthorizedException('No refresh token');
+
+    const { accessToken } = await this.authService.refresh(token);
+    res
+      .cookie(process.env.COOKIE_NAME || '', accessToken, {
+        httpOnly: process.env.COOKIE_HTTP_ONLY === 'true',
+        secure: process.env.COOKIE_SECURE === 'true',
+        sameSite: process.env.COOKIE_SAME_SITE as any,
+        maxAge: 60 * 60 * 1000,
+      })
+      .json({ message: 'Access token refreshed' });
   }
 
   @Get('me')
