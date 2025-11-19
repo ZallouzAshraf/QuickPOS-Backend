@@ -12,6 +12,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { SettingsModule } from './modules/settings/settings.module';
 import { CategoryModule } from './modules/categories/categories.module';
+import { InvoicesModule } from './modules/invoices/invoices.module';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { CategoryModule } from './modules/categories/categories.module';
     LicenseModule,
     AnalyticsModule,
     SettingsModule,
-    CategoryModule
+    CategoryModule,
+    InvoicesModule
   ],
   controllers: [AppController],
   providers: [AppService],
