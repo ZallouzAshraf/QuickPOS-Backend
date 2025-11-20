@@ -83,7 +83,7 @@ export class CreateInvoiceDto {
   @IsIn(PAYMENT_METHODS)
   paymentMethod: (typeof PAYMENT_METHODS)[number];
 
-  @ApiPropertyOptional({ enum: InvoiceStatus, example: InvoiceStatus.ISSUED })
+  @ApiPropertyOptional({ enum: InvoiceStatus, example: InvoiceStatus.PENDING })
   @IsEnum(InvoiceStatus)
   @IsOptional()
   status?: InvoiceStatus;
