@@ -2,10 +2,9 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
 
 export enum InvoiceStatus {
-  DRAFT = 'draft',
-  ISSUED = 'issued',
-  PAID = 'paid',
-  VOID = 'void',
+  PAID = "paid",
+  PENDING = "pending",
+  OVERDUE = "overdue",
 }
 
 @Schema({ _id: false, versionKey: false })
@@ -72,7 +71,7 @@ export class Invoice {
   @Prop({ type: Number, required: true })
   total: number;
 
-  @Prop({ type: String, enum: InvoiceStatus, default: InvoiceStatus.ISSUED })
+  @Prop({ type: String, enum: InvoiceStatus, default: InvoiceStatus.PENDING })
   status: InvoiceStatus;
 
   @Prop()
