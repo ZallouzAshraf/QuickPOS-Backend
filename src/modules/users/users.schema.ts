@@ -33,6 +33,31 @@ export class User {
 
   @Prop({ type: String, enum: UserStatus, default: UserStatus.ACTIVE })
   status: UserStatus;
+
+  @Prop({ trim: true })
+  address?: string;
+
+  @Prop({ trim: true })
+  city?: string;
+
+  @Prop({ trim: true })
+  postalCode?: string;
+
+  @Prop({ trim: true })
+  country?: string;
+
+  @Prop({ trim: true })
+  emailNotifications?: boolean;
+
+  @Prop({ trim: true })
+  lowStockAlerts?: boolean;
+
+  @Prop({ trim: true })
+  matriculeFiscale?: string;
+
+  @Prop({ trim: true })
+  logoUrl?: string;
+
 }
 
 export type UserDocument = User & Document;
