@@ -97,7 +97,7 @@ export class AuthService {
     }
 
     const sanitizedUser = this.usersService.sanitize(user);
-    
+
     const userDoc = user as any;
     const userId = userDoc._id ? String(userDoc._id) : userDoc.id;
     const payload: TokenPayload = {
@@ -123,7 +123,7 @@ export class AuthService {
     };
   }
 
-  
+
   async resetPassword(resetPasswordDto: ResetPasswordDto) {
     const user = await this.usersService.findByEmail(resetPasswordDto.email);
     if (!user) {
@@ -135,14 +135,14 @@ export class AuthService {
     }
 
     const hashedPassword = await bcrypt.hash(resetPasswordDto.newPassword, 10);
-    const updatedUser = await this.usersService.updatePasswordByEmail(
+    /*const updatedUser = await this.usersService.updatePasswordByEmail(
       resetPasswordDto.email,
       hashedPassword,
     );
 
     if (!updatedUser) {
       throw new NotFoundException('Unable to reset password.');
-    }
+    }*/
 
     return { message: 'Password reset successfully.' };
   }
@@ -170,7 +170,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid refresh token');
     }
   }
-  
+
   async getCurrentUser(userId: string) {
     const user = await this.usersService.findOne(userId);
     return this.usersService.sanitize(user);
