@@ -1,13 +1,13 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
+import * as bcrypt from 'bcrypt';
 
 @ApiTags('users')
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
-
+  constructor(private readonly usersService: UsersService) { }
 
   @Get()
   @ApiOperation({ summary: 'Get all users' })
@@ -22,6 +22,18 @@ export class UsersController {
   @ApiResponse({ status: 404, description: 'User not found.' })
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(id);
+  }
+
+  @Patch('update-password')
+  @ApiOperation({ summary: 'Mettre à jour le mot de passe' })
+  @ApiResponse({ status: 200, description: 'Mot de passe mis à jour avec succès.' })
+  @ApiResponse({ status: 404, description: 'Utilisateur non trouvé.' })
+  async updatePassword(
+    @Body('email') email: string,
+    @Body('oldPassword') oldPassword: string,
+    @Body('newPassword') newPassword: string
+  ) {
+    return this.usersService.updatePasswordByEmail(email, oldPassword, newPassword);
   }
 
   @Patch(':id')
@@ -39,5 +51,7 @@ export class UsersController {
   remove(@Param('id') id: string) {
     return this.usersService.remove(id);
   }
+
+
 }
 

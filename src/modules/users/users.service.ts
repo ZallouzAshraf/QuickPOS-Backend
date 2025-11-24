@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
@@ -7,7 +7,7 @@ import { User, UserDocument } from './users.schema';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private readonly userModel: Model<UserDocument>) {}
+  constructor(@InjectModel(User.name) private readonly userModel: Model<UserDocument>) { }
 
   sanitize(user: UserDocument) {
     const plain = user.toObject();
@@ -68,10 +68,19 @@ export class UsersService {
     return deletedUser;
   }
 
-  updatePasswordByEmail(email: string, hashedPassword: string) {
-    return this.userModel
-      .findOneAndUpdate({ email }, { password: hashedPassword }, { new: true })
-      .exec();
+  async updatePasswordByEmail(email: string, oldPassword: string, newPassword: string) {
+    const user = await this.userModel.findOne({ email });
+    if (!user) throw new NotFoundException("Utilisateur non trouvé");
+
+    const isValid = await bcrypt.compare(oldPassword, user.password);
+    if (!isValid) throw new UnauthorizedException("Ancien mot de passe incorrect");
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    user.password = hashedPassword;
+    await user.save();
+
+    return { message: "Mot de passe mis à jour avec succès" };
   }
 }
 
